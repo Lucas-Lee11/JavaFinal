@@ -15,15 +15,17 @@ public class Calc{
 
             }
             catch (InputMismatchException err){
-                System.out.println("Oops");
-                input.nextLine();
+                String exit = input.nextLine();
+                if (exit.equals("exit")){
+                    break;
+                }
+                System.out.println("Oops" + err);
                 continue;
             }
-            if (num == 666){
-                break;
-            }
 
-            System.out.println(num);
+
+            Complex sum = Complex.add(new Complex(2,3), new Complex(num));
+            sum.display();
 
 
 
