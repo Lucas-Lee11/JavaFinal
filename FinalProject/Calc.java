@@ -3,14 +3,12 @@ import java.util.*;
 public class Calc{
 
     public static double eqSolver(String toSolve){
-        System.out.println("ln:" + toSolve.length());
         return new Object(){
             int curPos = 0, ch  = toSolve.charAt(curPos);
 
             void advance(){
                 if(curPos + 1 < toSolve.length()){
                     curPos++;
-                    System.out.println("advancing to :" + curPos);
                     ch = toSolve.charAt(curPos);
                 }
                 else{
@@ -21,7 +19,6 @@ public class Calc{
             void back(){
                 if(!(curPos - 1 < 0)){
                     curPos--;
-                    System.out.println("back to :" + curPos);
                     ch = toSolve.charAt(curPos);
 
                 }
@@ -48,9 +45,7 @@ public class Calc{
                     advance();
                     if(lookFor('+')){
                         advance();
-                        System.out.println("found a +");
                         answer += multiplyTogether();
-                        System.out.println("after adding:" + answer);
                     }
                     else if(lookFor('-')){
                         advance();
@@ -69,7 +64,7 @@ public class Calc{
                 double answer = functionCompute();
                 while (true){
                     advance();
-                    if(lookFor('*')){
+                    if(lookFor('*') || lookFor('(')){
                         advance();
                         answer *= functionCompute();
                     }
@@ -82,8 +77,6 @@ public class Calc{
                         return answer;
                     }
 
-
-
                 }
 
 
@@ -94,43 +87,46 @@ public class Calc{
                 int startPos = curPos;
 
                 if(lookFor('+')){
+                    advance();
                     return functionCompute();
                 }
                 else if(lookFor('-')){
+                    advance();
                     return -functionCompute();
                 }
 
                 if(lookFor('(')){
                     advance();
                     answer = addTogether();
-                    lookFor(')');
                 }
 
                 else if ((ch >= '0' && ch <= '9') || ch == '.') {
                     while ((ch >= '0' && ch <= '9') || ch == '.') {
-                        System.out.println(ch);
                         advance();
                     }
                     if(!((ch >= '0' && ch <= '9') || ch == '.' || ch == '\0')){
                         back();
-
                     }
 
-                    System.out.println("final num: " + ch);
-                    System.out.println(curPos);
                     answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
-                    System.out.println(answer);
                 }
                 else if (ch >= 'a' && ch <= 'z') { // functions
                     while (ch >= 'a' && ch <= 'z'){
                         advance();
-
                     }
                     if(!(ch >= 'a' && ch <= 'z')){
                         back();
                     }
+
                     String func = toSolve.substring(startPos, curPos + 1);
-                    answer = functionCompute();
+                    advance();
+
+                    if(ch != '\0'){
+                        answer = functionCompute();
+                    }
+                    else throw new RuntimeException ("No input for function: " + func);
+
+
                     if (func.equals("sqrt")) answer = Math.sqrt(answer);
                     else if (func.equals("sin")) answer = Math.sin(Math.toRadians(answer));
                     else if (func.equals("cos")) answer = Math.cos(Math.toRadians(answer));
@@ -138,11 +134,17 @@ public class Calc{
                     else throw new RuntimeException("Unknown function: " + func);
                 }
                 else {
-                    throw new RuntimeException("Unexpected: " + (char)ch);
+                    throw new RuntimeException("Unexpected character");
                 }
 
-                if (lookFor('^')) answer = Math.pow(answer, functionCompute()); // exponentiation
-                System.out.println("End Compute");
+                advance();
+                if (lookFor('^')) {
+                    advance();
+                    answer = Math.pow(answer, functionCompute());
+                }
+                else{
+                    back();
+                }
 
                 return answer;
 
@@ -161,14 +163,20 @@ public class Calc{
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
+        System.out.println("Type exit to leave");
 
         while (true){
 
-            System.out.println("Input pls.");
+            System.out.println("***************************");
+            System.out.println("Enter an expression");
             String eq = input.nextLine();
 
+            if(eq.toLowerCase().equals("exit")){
+                break;
+            }
 
-            System.out.println("final:" + eqSolver(eq));
+
+            System.out.println("Evaluation: " + eqSolver(eq));
 
 
 
