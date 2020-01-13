@@ -36,9 +36,9 @@ public class Complex {
 		return output;
 	}
 
-    public void Complex sub(Complex var1, Complex var2){
+    public static Complex sub(Complex var1, Complex var2){
         Complex neg = new Complex(-var2.real, -var2.imaginary);
-        Complex output = new Complex.add(var1, neg);
+        Complex output = Complex.add(var1, neg);
         return output;
     }
 
@@ -47,7 +47,9 @@ public class Complex {
         return output;
     }
 
-    public
+    // public static Complex div(Complex var1, Complex var2){
+    //
+    // }
 
 	public static double mod(Complex var) {
 		double output = Math.hypot(var.real, var.imaginary);
