@@ -12,10 +12,9 @@ public class Calc{
                     ch = toSolve.charAt(curPos);
                 }
                 else{
-                    ch = '\0';
+                    ch = 0;
                 }
             }
-
             void back(){
                 if(!(curPos - 1 < 0)){
                     curPos--;
@@ -64,7 +63,7 @@ public class Calc{
                 double answer = functionCompute();
                 while (true){
                     advance();
-                    if(lookFor('*') || lookFor('(')){
+                    if(lookFor('*')){
                         advance();
                         answer *= functionCompute();
                     }
@@ -83,8 +82,13 @@ public class Calc{
             }
 
             double functionCompute(){
+                while(lookFor(' ')){
+                    advance();
+                }
+
                 double answer;
                 int startPos = curPos;
+
 
                 if(lookFor('+')){
                     advance();
@@ -94,37 +98,73 @@ public class Calc{
                     advance();
                     return -functionCompute();
                 }
-
-                if(lookFor('(')){
+                else if(lookFor('(')){
                     advance();
                     answer = addTogether();
+                    do {
+                        advance();
+                    }while(lookFor(')'));
+                    back();
                 }
 
                 else if ((ch >= '0' && ch <= '9') || ch == '.') {
                     while ((ch >= '0' && ch <= '9') || ch == '.') {
                         advance();
                     }
+                    if(lookFor('(')){
+                        back();
+                        answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
+                        advance();advance();
+                        answer *= addTogether();
+                        do{
+                            System.out.println(ch);
+                            advance();
+
+                        }while(lookFor(')'));
+                        System.out.println(ch);
+                        System.out.println("---");
+                        return answer;
+                    }
+                    else if(ch >= 'a' && ch <= 'z') {
+                        back();
+                        answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
+                        advance();
+                        answer*= addTogether();
+                        return answer;
+                    }
+
                     if(!((ch >= '0' && ch <= '9') || ch == '.' || ch == '\0')){
                         back();
                     }
 
                     answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
                 }
-                else if (ch >= 'a' && ch <= 'z') { // functions
+                else if (ch >= 'a' && ch <= 'z') {
                     while (ch >= 'a' && ch <= 'z'){
                         advance();
                     }
-                    if(!(ch >= 'a' && ch <= 'z')){
+                    if(!(ch >= 'a' && ch <= 'z') && ch != 0){
                         back();
                     }
 
                     String func = toSolve.substring(startPos, curPos + 1);
                     advance();
+                    if(lookFor('(')){
+                        advance();
 
-                    if(ch != '\0'){
+                    }
+                    if(ch == 0){
+                        throw new RuntimeException ("No input for function: " + func);
+
+                    }
+                    else {
+                        back();
+                        if(!lookFor('(')){
+                            advance();
+
+                        }
                         answer = functionCompute();
                     }
-                    else throw new RuntimeException ("No input for function: " + func);
 
 
                     if (func.equals("sqrt")) answer = Math.sqrt(answer);
@@ -134,7 +174,7 @@ public class Calc{
                     else throw new RuntimeException("Unknown function: " + func);
                 }
                 else {
-                    throw new RuntimeException("Unexpected character");
+                    throw new RuntimeException("Unexpected character: " + toSolve.charAt(curPos));
                 }
 
                 advance();
@@ -150,16 +190,10 @@ public class Calc{
 
             }
 
-
-
-
         }.addTogether();
 
 
-
     }
-
-
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
