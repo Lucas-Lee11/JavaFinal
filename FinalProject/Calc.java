@@ -11,31 +11,21 @@ public class Calc{
                     curPos++;
                     ch = toSolve.charAt(curPos);
                 }
-                else{
-                    ch = 0;
-                }
+                else ch = 0;
             }
+
             void back(){
                 if(!(curPos - 1 < 0)){
                     curPos--;
                     ch = toSolve.charAt(curPos);
-
                 }
             }
-
 
             boolean lookFor(char toLook){
-                while(ch == ' '){
-                    advance();
-                }
-                if(ch == toLook){
-                    return true;
-                }
-                else{
-                    return false;
-                }
+                while(ch == ' ') advance();
+                if(ch == toLook) return true;
+                else return false;
             }
-
 
             double addTogether(){
 
@@ -54,9 +44,7 @@ public class Calc{
                         back();
                         return answer;
                     }
-
                 }
-
             }
 
             double multiplyTogether(){
@@ -75,9 +63,7 @@ public class Calc{
                         back();
                         return answer;
                     }
-
                 }
-
 
             }
 
@@ -88,7 +74,6 @@ public class Calc{
 
                 double answer;
                 int startPos = curPos;
-
 
                 if(lookFor('+')){
                     advance();
@@ -118,7 +103,6 @@ public class Calc{
                         answer *= addTogether();
                         do{
                             advance();
-
                         }while(lookFor(')'));
                         back();
                         return answer;
@@ -135,14 +119,14 @@ public class Calc{
                     }
 
                     answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
+
                 }
                 else if (ch >= 'a' && ch <= 'z') {
                     while (ch >= 'a' && ch <= 'z'){
                         advance();
                     }
-                    if(!(ch >= 'a' && ch <= 'z') && ch != 0){
-                        back();
-                    }
+
+                    if(ch != 0)back();
 
                     String func = toSolve.substring(startPos, curPos + 1);
                     advance();
@@ -179,9 +163,7 @@ public class Calc{
                     advance();
                     answer = Math.pow(answer, functionCompute());
                 }
-                else{
-                    back();
-                }
+                else back();
 
                 return answer;
 
