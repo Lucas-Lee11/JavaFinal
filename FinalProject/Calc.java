@@ -117,12 +117,10 @@ public class Calc{
                         advance();advance();
                         answer *= addTogether();
                         do{
-                            System.out.println(ch);
                             advance();
 
                         }while(lookFor(')'));
-                        System.out.println(ch);
-                        System.out.println("---");
+                        back();
                         return answer;
                     }
                     else if(ch >= 'a' && ch <= 'z') {
@@ -132,8 +130,7 @@ public class Calc{
                         answer*= addTogether();
                         return answer;
                     }
-
-                    if(!((ch >= '0' && ch <= '9') || ch == '.' || ch == '\0')){
+                    else if(!(ch == 0)){
                         back();
                     }
 
