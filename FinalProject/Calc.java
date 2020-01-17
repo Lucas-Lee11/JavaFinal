@@ -22,6 +22,7 @@ public class Calc{
                     curPos--;
                     ch = toSolve.charAt(curPos);
                 }
+                while(ch == ' ') back();
             }
 
             //Tries to scan for a character
@@ -139,13 +140,23 @@ public class Calc{
                     if(ch != 0)back();
 
                     String func = toSolve.substring(startPos, curPos + 1);
+                    if (func.equals("e")){
+                        answer = Math.E;
+                        return answer;
+                    }
+                    else if (func.equals("pi")){
+                        answer = Math.PI;
+                        return answer;
+                    }
+
+
                     advance();
                     if(lookFor('(')){
                         advance();
 
                     }
                     if(ch == 0){
-                        throw new RuntimeException ("No input for function: " + func);
+                        throw new RuntimeException ("No input for function: " + func + "()");
 
                     }
                     else {
@@ -162,7 +173,7 @@ public class Calc{
                     else if (func.equals("sin")) answer = Math.sin(Math.toRadians(answer));
                     else if (func.equals("cos")) answer = Math.cos(Math.toRadians(answer));
                     else if (func.equals("tan")) answer = Math.tan(Math.toRadians(answer));
-                    else throw new RuntimeException("Unknown function: " + func);
+                    else throw new RuntimeException("Unknown function: " + func + "()");
                 }
                 else {
                     throw new RuntimeException("Unexpected character: " + toSolve.charAt(curPos));

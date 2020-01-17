@@ -7,7 +7,6 @@ public class Quadratic{
     public double c = 0;
     public double[] roots = findRoots(this);
 
-
     public Quadratic(double a, double b, double c){
         this.a = a;
         this.b = b;

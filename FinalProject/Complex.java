@@ -21,15 +21,19 @@ public class Complex {
         mod = Math.abs(num);
     }
 
+    public static Complex sqrt(double var){
+        if (var >=0){
+            return new Complex(Math.sqrt(var));
+        }
+        else{
+            return new Complex(0, Math.sqrt(-var));
+        }
+    }
+
 	public static Complex square(Complex var) {
 		Complex output = new Complex(Math.pow(var.real,2) - Math.pow(var.imaginary, 2), 2 * var.real * var.imaginary);
 		return output;
 	}
-
-    public Complex sqrt(double var){
-        Complex output = new Complex(0, Math.sqrt(-var));
-        return output;
-    }
 
 	public static Complex add(Complex var1, Complex var2) {
 		Complex output = new Complex (var1.real + var2.real, var1.imaginary + var2.imaginary);
