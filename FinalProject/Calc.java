@@ -142,11 +142,12 @@ public class Calc{
                         back();
                     }
 
+
                     answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
                     fullAnswer = new Complex(answer);
 
                 }
-                /*
+
                 else if (ch >= 'a' && ch <= 'z') {
 
                     //Looks for the names of functions
@@ -190,14 +191,15 @@ public class Calc{
 
                     //List of recognized functions
 
-                    if (func.equals("sqrt")) answer = Math.sqrt(answer);
-                    else if (func.equals("sin")) answer = Math.sin(Math.toRadians(answer));
-                    else if (func.equals("cos")) answer = Math.cos(Math.toRadians(answer));
-                    else if (func.equals("tan")) answer = Math.tan(Math.toRadians(answer));
+                    if (func.equals("sqrt")) fullAnswer = Complex.sqrt(fullAnswer);
+                    else if (func.equals("sin")) fullAnswer = Complex.sin(fullAnswer);
+                    else if (func.equals("cos")) fullAnswer = Complex.cos(fullAnswer);
+                    else if (func.equals("tan")) fullAnswer = Complex.tan(fullAnswer);
+                    else if (func.equals("torad") && fullAnswer.isReal) fullAnswer = new Complex(Math.toRadians(fullAnswer.real));
+                    else if (func.equals ("torad") && !fullAnswer.isReal) throw new RuntimeException("Cannot convert non-real number to radians");
                     else throw new RuntimeException("Unknown function: " + func + "()");
 
                 }
-                */
                 else {
                     throw new RuntimeException("Unexpected character: " + toSolve.charAt(curPos));
                 }
@@ -206,7 +208,7 @@ public class Calc{
                 advance();
                 if (lookFor('^')) {
                     advance();
-                    fullAnswer = Complex.pow(fullAnswer, (int) functionCompute().real);
+                    fullAnswer = Complex.pow(fullAnswer, functionCompute());
                 }
                 else back();
 

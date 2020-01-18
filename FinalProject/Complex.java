@@ -5,12 +5,17 @@ public class Complex {
 	double real;
 	double imaginary;
 	double mod;
+    double arg;
+    boolean isReal;
 
 	public Complex(double r, double i) {
 
 		real = r;
 		imaginary = i;
 		mod = mod(this);
+        arg = arg(this);
+        if(i == 0) isReal = true;
+        else isReal = false;
 
 	}
 
@@ -18,30 +23,10 @@ public class Complex {
         real = num;
         imaginary = 0;
         mod = Math.abs(num);
+        arg = 0;
+        isReal = true;
     }
 
-    public static Complex fullSqrt(double var){
-        if (var >=0){
-            return new Complex(Math.sqrt(var));
-        }
-        else{
-            return new Complex(0, Math.sqrt(-var));
-        }
-    }
-
-	public static Complex pow(Complex var, int pow) {
-        if(pow >=0){
-            Complex output = new Complex(1);
-    		for(int i = 1; i <= pow; i++){
-                output = mult(output, var);
-            }
-    		return output;
-        }
-        else{
-            return div(new Complex(1), pow(var, -pow));
-        }
-
-	}
 
 	public static Complex add(Complex var1, Complex var2) {
 		Complex output = new Complex (var1.real + var2.real, var1.imaginary + var2.imaginary);
@@ -66,6 +51,55 @@ public class Complex {
          return output;
      }
 
+
+     public static Complex pow(Complex var, Complex pow) {
+         Complex a = mult(new Complex(Math.log(var.mod)), pow);
+         Complex temp = mult(new Complex(var.arg), pow);
+         Complex b = mult(new Complex(0, 1), temp);
+         Complex exp = add(a, b);
+
+         double mod = Math.pow(Math.E, exp.real);
+         double arg = exp.imaginary;
+
+         Complex output = polarToCoor(mod, arg);
+         return output;
+
+ 	}
+
+    public static Complex sqrt(Complex var){
+        int sign;
+        if(var.imaginary >= 0) sign = 1;
+        else sign = -1;
+        Complex output = new Complex(Math.sqrt((var.mod + var.real)/2), sign * Math.sqrt((var.mod - var.real)/2));
+        return output;
+    }
+
+    public static Complex sin(Complex var){
+        Complex output = new Complex(Math.sin(var.real) * Math.cosh(var.imaginary), Math.cos(var.real) * Math.sinh(var.imaginary));
+        return output;
+    }
+
+    public static Complex cos(Complex var){
+        Complex output = new Complex(Math.cos(var.real) * Math.cosh(var.imaginary),  -1 * Math.sin(var.real) * Math.sinh(var.imaginary));
+        return output;
+    }
+
+    public static Complex tan(Complex var){
+        Complex output = div(sin(var), cos(var));
+        return output;
+    }
+
+
+    public static Complex polarToCoor(double mod, double arg){
+        Complex output = new Complex(mod * Math.cos(arg), mod * Math.sin(arg));
+        return output;
+    }
+
+    public static double arg(Complex var){
+        double output = Math.atan2(var.imaginary, var.real);
+        return output;
+    }
+
 	public static double mod(Complex var) {
 		double output = Math.hypot(var.real, var.imaginary);
 		return output;
@@ -88,11 +122,10 @@ public class Complex {
 
     public static void main(String[] args) {
 
+        Complex a = new Complex(30);
 
-        Complex a = new Complex(1,2);
-        Complex b = new Complex(2,3);
+        sin(a).display();
 
-        mult(a, b).display();
     }
 
 
