@@ -101,6 +101,11 @@ public class Calc{
                         advance();
                     }while(lookFor(')'));
                     back();
+                    System.out.println(toSolve.charAt(curPos));
+                    if(lookFor(')')){
+                        advance();
+                        fullAnswer = Complex.mult(fullAnswer, addTogether());
+                    }
                 }
 
                 else if ((ch >= '0' && ch <= '9') || ch == '.') {
@@ -119,6 +124,12 @@ public class Calc{
                             advance();
                         }while(lookFor(')'));
                         back();
+                        System.out.println(toSolve.charAt(curPos));
+                        if(lookFor(')')){
+                            advance();
+                            fullAnswer = Complex.mult(fullAnswer, addTogether());
+                        }
+
 
                         return fullAnswer;
                     }
