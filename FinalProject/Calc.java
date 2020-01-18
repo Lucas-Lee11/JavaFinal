@@ -86,7 +86,7 @@ public class Calc{
                 lookFor(' ');
 
                 double answer;
-                Complex fullAnswer;
+                Complex fullAnswer = new Complex(0);
                 int startPos = curPos; //Used to find full value of functions or numbers
 
                 //For direct modifiers to a number
@@ -148,53 +148,57 @@ public class Calc{
                     if(ch != 0)back();
 
                     String func = toSolve.substring(startPos, curPos + 1);
+                    boolean sp = false;
                     if (func.equals("e")){
                         answer = Math.E;
                         fullAnswer = new Complex(answer);
-                        return fullAnswer;
+                        sp = true;
                     }
                     else if (func.equals("pi")){
                         answer = Math.PI;
                         fullAnswer = new Complex(answer);
-                        return fullAnswer;
+                        sp = true;
                     }
                     else if(func.equals("i")){
                         fullAnswer = new Complex(0, 1);
-                        return fullAnswer;
+                        sp = true;
                     }
 
-
-                    advance();
-                    if(lookFor('(')){
+                    if (!sp){
                         advance();
-
-                    }
-                    if(ch == 0){
-                        throw new RuntimeException ("No input for function: " + func + "()");
-
-                    }
-                    else {
-                        back();
-                        if(!lookFor('(')){
+                        if(lookFor('(')){
                             advance();
 
                         }
-                        fullAnswer = functionCompute();
+                        if(ch == 0){
+                            throw new RuntimeException ("No input for function: " + func + "()");
+
+                        }
+                        else {
+                            back();
+                            if(!lookFor('(')){
+                                advance();
+
+                            }
+                            fullAnswer = functionCompute();
+                        }
+
+
+                        //List of recognized functions
+
+                        if (func.equals("sqrt")) fullAnswer = Complex.sqrt(fullAnswer);
+                        else if (func.equals("sin")) fullAnswer = Complex.sin(fullAnswer);
+                        else if (func.equals("cos")) fullAnswer = Complex.cos(fullAnswer);
+                        else if (func.equals("tan")) fullAnswer = Complex.tan(fullAnswer);
+                        else if (func.equals("torad") && fullAnswer.isReal) fullAnswer = new Complex(Math.toRadians(fullAnswer.real));
+                        else if (func.equals ("torad") && !fullAnswer.isReal) throw new RuntimeException("Cannot convert non-real number to radians");
+                        else throw new RuntimeException("Unknown function: " + func + "()");
                     }
 
 
-                    //List of recognized functions
-
-                    if (func.equals("sqrt")) fullAnswer = Complex.sqrt(fullAnswer);
-                    else if (func.equals("sin")) fullAnswer = Complex.sin(fullAnswer);
-                    else if (func.equals("cos")) fullAnswer = Complex.cos(fullAnswer);
-                    else if (func.equals("tan")) fullAnswer = Complex.tan(fullAnswer);
-                    else if (func.equals("torad") && fullAnswer.isReal) fullAnswer = new Complex(Math.toRadians(fullAnswer.real));
-                    else if (func.equals ("torad") && !fullAnswer.isReal) throw new RuntimeException("Cannot convert non-real number to radians");
-                    else throw new RuntimeException("Unknown function: " + func + "()");
-
                 }
                 else {
+                    fullAnswer = new Complex(0);
                     throw new RuntimeException("Unexpected character: " + toSolve.charAt(curPos));
                 }
 
