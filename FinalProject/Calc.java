@@ -61,9 +61,6 @@ public class Calc{
                         advance();
                         fullAnswer = Complex.mult(fullAnswer, functionCompute());
                     }
-                    if(lookFor('(')){
-                        fullAnswer = Complex.mult(fullAnswer, functionCompute());
-                    }
                     else if(lookFor('/')){
                         advance();
                         fullAnswer = Complex.div(fullAnswer, functionCompute());
@@ -97,14 +94,7 @@ public class Calc{
                 else if(lookFor('(')){
                     advance();
                     fullAnswer = addTogether();
-                    do {
-                        advance();
-                    }while(lookFor(')'));
-                    back();
-                    if(lookFor(')')){
-                        advance();
-                        fullAnswer = Complex.mult(fullAnswer, addTogether());
-                    }
+
                 }
 
                 else if ((ch >= '0' && ch <= '9') || ch == '.') {
@@ -112,26 +102,8 @@ public class Calc{
                     while ((ch >= '0' && ch <= '9') || ch == '.') {
                         advance();
                     }
-                    //Automatically multiplies parentheses eg 3(2) = 6
-                    if(lookFor('(')){
-                        back();
-                        answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
-                        advance();advance();
-                        fullAnswer = new Complex(answer);
-                        fullAnswer = Complex.mult(fullAnswer, addTogether());
-                        do{
-                            advance();
-                        }while(lookFor(')'));
-                        back();
-                        if(lookFor(')')){
-                            advance();
-                            fullAnswer = Complex.mult(fullAnswer, addTogether());
-                        }
 
-
-                        return fullAnswer;
-                    }
-                    else if (lookFor('i')){
+                    if (lookFor('i')){
                         back();
                         answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
                         advance();
