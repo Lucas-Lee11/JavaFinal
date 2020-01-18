@@ -61,6 +61,9 @@ public class Calc{
                         advance();
                         fullAnswer = Complex.mult(fullAnswer, functionCompute());
                     }
+                    if(lookFor('(')){
+                        fullAnswer = Complex.mult(fullAnswer, functionCompute());
+                    }
                     else if(lookFor('/')){
                         advance();
                         fullAnswer = Complex.div(fullAnswer, functionCompute());
@@ -119,6 +122,13 @@ public class Calc{
 
                         return fullAnswer;
                     }
+                    else if (lookFor('i')){
+                        back();
+                        answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
+                        advance();
+                        fullAnswer = new Complex(0, answer);
+                        return fullAnswer;
+                    }
                     //Automatically multiplies functions eg 3sin(30) = 3/2
                     else if(ch >= 'a' && ch <= 'z') {
                         back();
@@ -136,7 +146,9 @@ public class Calc{
                     fullAnswer = new Complex(answer);
 
                 }
+                /*
                 else if (ch >= 'a' && ch <= 'z') {
+
                     //Looks for the names of functions
                     while (ch >= 'a' && ch <= 'z'){
                         advance();
@@ -177,14 +189,15 @@ public class Calc{
 
 
                     //List of recognized functions
-                    /*
+
                     if (func.equals("sqrt")) answer = Math.sqrt(answer);
                     else if (func.equals("sin")) answer = Math.sin(Math.toRadians(answer));
                     else if (func.equals("cos")) answer = Math.cos(Math.toRadians(answer));
                     else if (func.equals("tan")) answer = Math.tan(Math.toRadians(answer));
                     else throw new RuntimeException("Unknown function: " + func + "()");
-                    */
+
                 }
+                */
                 else {
                     throw new RuntimeException("Unexpected character: " + toSolve.charAt(curPos));
                 }

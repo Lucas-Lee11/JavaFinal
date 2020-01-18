@@ -90,9 +90,9 @@ public class Complex {
 
 
         Complex a = new Complex(1,2);
-        Complex b = new Complex(3,4);
+        Complex b = new Complex(2,3);
 
-        sub(a, b).display();
+        mult(a, b).display();
     }
 
 
