@@ -32,6 +32,13 @@ public class Calc{
                 else return false;
             }
 
+            Complex round(){
+                Complex roundedAnswer = addTogether();
+                roundedAnswer.real = ((double) Math.round(roundedAnswer.real *100000))/100000;
+                roundedAnswer.imaginary = ((double) Math.round(roundedAnswer.imaginary *100000))/100000;
+                return roundedAnswer;
+            }
+
             //Main eqSolver; calls multiplyTogether and adds/subtracts results
             Complex addTogether(){
                 Complex fullAnswer = multiplyTogether();
@@ -94,6 +101,7 @@ public class Calc{
                 else if(lookFor('(')){
                     advance();
                     fullAnswer = addTogether();
+                    advance();
 
                 }
 
@@ -201,7 +209,7 @@ public class Calc{
 
             }
 
-        }.addTogether();
+        }.round();
 
 
     }
