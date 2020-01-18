@@ -31,3 +31,4 @@ Complex Math
 + http://www.milefoot.com/math/complex/summaryops.htm
 + http://stanleyrabinowitz.com/download/complexsquareroot.pdf
 + https://math.stackexchange.com/questions/476968/complex-power-of-a-complex-number
++ Mr.Sterr's Alg 2 Class!

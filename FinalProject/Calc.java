@@ -214,8 +214,8 @@ public class Calc{
 
 
     }
-    public static void main(String[] args) {
 
+    public static void calculator(){
         Scanner input = new Scanner(System.in);
         System.out.println("Type exit to leave");
 
@@ -233,6 +233,37 @@ public class Calc{
             System.out.print("Evaluation: ");
             eqSolver(eq).display();
 
+
+
+        }
+    }
+
+
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Lucas Lee's AP CS Final Project");
+
+        while(true){
+            System.out.println("***************************");
+            System.out.println("Select:");
+            System.out.println("1. Complex Calculator");
+            //System.out.println("2. Solving Quadratics");
+            System.out.println("Type exit to leave");
+            String choice = input.nextLine();
+
+            if(choice.equals("1")){
+                calculator();
+            }
+            // else if(choice.equals("2")){
+            //     quadSolver();
+            // }
+            else if(choice.toLowerCase().equals("exit")){
+                break;
+            }
+            else{
+                System.out.println("That is not a valid input");
+            }
 
 
         }

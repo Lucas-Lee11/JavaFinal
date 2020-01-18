@@ -30,6 +30,12 @@ public class Quadratic{
 
     }
 
+    public void display(){
+        for(Complex root : roots){
+            root.display();
+        }
+    }
+
     public static Quadratic combine(Quadratic eq1, Quadratic eq2){
         Quadratic output = new Quadratic(eq1.a -eq2.a, eq1.b - eq2.b, eq1.c - eq2.c);
         return output;
