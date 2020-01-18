@@ -27,7 +27,7 @@ public class Complex {
         isReal = true;
     }
 
-
+    //Basic arithmatic
 	public static Complex add(Complex var1, Complex var2) {
 		Complex output = new Complex (var1.real + var2.real, var1.imaginary + var2.imaginary);
 		return output;
@@ -90,11 +90,13 @@ public class Complex {
     }
 
 
+    //Converts from a given modulus and argument to a+bi form
     public static Complex polarToCoor(double mod, double arg){
         Complex output = new Complex(mod * Math.cos(arg), mod * Math.sin(arg));
         return output;
     }
 
+    //Methods to handle polar aspects of complex numbers
     public static double arg(Complex var){
         double output = Math.atan2(var.imaginary, var.real);
         return output;
@@ -105,10 +107,12 @@ public class Complex {
 		return output;
 	}
 
+    //Returs a number's complex conjugate
     public Complex conjugate(){
         return new Complex(this.real, -this.imaginary);
     }
 
+    //A static and non-static method to display a complex number
 	public static void display(Complex var) {
 		String output =var.real +  " + " + var.imaginary + "i";
 		System.out.println(output);
@@ -118,17 +122,5 @@ public class Complex {
 		String output = this.real +  " + " + this.imaginary + "i";
 		System.out.println(output);
 	}
-
-
-    public static void main(String[] args) {
-
-        Complex a = new Complex(30);
-
-        sin(a).display();
-
-    }
-
-
-
 
 }

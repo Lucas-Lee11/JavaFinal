@@ -32,6 +32,7 @@ public class Calc{
                 else return false;
             }
 
+            //Rounding because floating point math isn't always accurate
             Complex round(){
                 Complex roundedAnswer = addTogether();
                 roundedAnswer.real = ((double) Math.round(roundedAnswer.real *100000))/100000;
