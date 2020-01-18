@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Calc{
 
-    public static double eqSolver(String toSolve){
+    public static Complex eqSolver(String toSolve){
         return new Object(){
             //Tracks place in string and the character there
             int curPos = 0, ch  = toSolve.charAt(curPos);
@@ -33,51 +33,52 @@ public class Calc{
             }
 
             //Main eqSolver; calls multiplyTogether and adds/subtracts results
-            double addTogether(){
-                double answer = multiplyTogether();
+            Complex addTogether(){
+                Complex fullAnswer = multiplyTogether();
                 while (true){
                     advance();
                     if(lookFor('+')){
                         advance();
-                        answer += multiplyTogether();
+                        fullAnswer = Complex.add(fullAnswer, multiplyTogether());
                     }
                     else if(lookFor('-')){
                         advance();
-                        answer -= multiplyTogether();
+                        fullAnswer = Complex.sub(fullAnswer, multiplyTogether());
                     }
                     else{
                         back();
-                        return answer;
+                        return fullAnswer;
                     }
                 }
             }
 
             //Multiplies or divides results of functionCompute
-            double multiplyTogether(){
-                double answer = functionCompute();
+            Complex multiplyTogether(){
+                Complex fullAnswer = functionCompute();
                 while (true){
                     advance();
                     if(lookFor('*')){
                         advance();
-                        answer *= functionCompute();
+                        fullAnswer = Complex.mult(fullAnswer, functionCompute());
                     }
                     else if(lookFor('/')){
                         advance();
-                        answer /= functionCompute();
+                        fullAnswer = Complex.div(fullAnswer, functionCompute());
                     }
                     else{
                         back();
-                        return answer;
+                        return fullAnswer;
                     }
                 }
 
             }
 
-            double functionCompute(){
+            Complex functionCompute(){
                 //Gets rid of spaces
                 lookFor(' ');
 
                 double answer;
+                Complex fullAnswer;
                 int startPos = curPos; //Used to find full value of functions or numbers
 
                 //For direct modifiers to a number
@@ -87,12 +88,12 @@ public class Calc{
                 }
                 else if(lookFor('-')){
                     advance();
-                    return -functionCompute();
+                    return Complex.mult(functionCompute(), new Complex(-1));
                 }
                 //For parentheses
                 else if(lookFor('(')){
                     advance();
-                    answer = addTogether();
+                    fullAnswer = addTogether();
                     do {
                         advance();
                     }while(lookFor(')'));
@@ -109,26 +110,30 @@ public class Calc{
                         back();
                         answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
                         advance();advance();
-                        answer *= addTogether();
+                        fullAnswer = new Complex(answer);
+                        fullAnswer = Complex.mult(fullAnswer, addTogether());
                         do{
                             advance();
                         }while(lookFor(')'));
                         back();
-                        return answer;
+
+                        return fullAnswer;
                     }
                     //Automatically multiplies functions eg 3sin(30) = 3/2
                     else if(ch >= 'a' && ch <= 'z') {
                         back();
                         answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
+                        fullAnswer = new Complex(answer);
                         advance();
-                        answer*= addTogether();
-                        return answer;
+                        fullAnswer = Complex.mult(fullAnswer, addTogether());
+                        return fullAnswer;
                     }
                     else if(!(ch == 0)){
                         back();
                     }
 
                     answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
+                    fullAnswer = new Complex(answer);
 
                 }
                 else if (ch >= 'a' && ch <= 'z') {
@@ -142,11 +147,13 @@ public class Calc{
                     String func = toSolve.substring(startPos, curPos + 1);
                     if (func.equals("e")){
                         answer = Math.E;
-                        return answer;
+                        fullAnswer = new Complex(answer);
+                        return fullAnswer;
                     }
                     else if (func.equals("pi")){
                         answer = Math.PI;
-                        return answer;
+                        fullAnswer = new Complex(answer);
+                        return fullAnswer;
                     }
 
 
@@ -165,15 +172,18 @@ public class Calc{
                             advance();
 
                         }
-                        answer = functionCompute();
+                        fullAnswer = functionCompute();
                     }
 
+
                     //List of recognized functions
+                    /*
                     if (func.equals("sqrt")) answer = Math.sqrt(answer);
                     else if (func.equals("sin")) answer = Math.sin(Math.toRadians(answer));
                     else if (func.equals("cos")) answer = Math.cos(Math.toRadians(answer));
                     else if (func.equals("tan")) answer = Math.tan(Math.toRadians(answer));
                     else throw new RuntimeException("Unknown function: " + func + "()");
+                    */
                 }
                 else {
                     throw new RuntimeException("Unexpected character: " + toSolve.charAt(curPos));
@@ -183,11 +193,11 @@ public class Calc{
                 advance();
                 if (lookFor('^')) {
                     advance();
-                    answer = Math.pow(answer, functionCompute());
+                    fullAnswer = Complex.pow(fullAnswer, (int) functionCompute().real);
                 }
                 else back();
 
-                return answer;
+                return fullAnswer;
 
             }
 
@@ -211,7 +221,8 @@ public class Calc{
             }
 
 
-            System.out.println("Evaluation: " + eqSolver(eq));
+            System.out.print("Evaluation: ");
+            eqSolver(eq).display();
 
 
 
