@@ -6,7 +6,7 @@ Compile by using 'javac \*.java'
 
 Execute by using 'java Calc'
 
-#Info
+# Info
 
 This is a calculator designed to handle complex numbers.
 
@@ -18,7 +18,7 @@ Please keep in mind the order of operations and ensure that there are no implied
 This calculator uses radians. Use the custom function "torad()" in the input for conversion to radians (e.g. 'sin(torad(30))' will return 0.5 + 0.0i
 
 
-#Credits
+# Credits
 
 Some basic ideas from
 
