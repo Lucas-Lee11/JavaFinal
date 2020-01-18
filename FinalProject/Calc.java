@@ -101,7 +101,6 @@ public class Calc{
                         advance();
                     }while(lookFor(')'));
                     back();
-                    System.out.println(toSolve.charAt(curPos));
                     if(lookFor(')')){
                         advance();
                         fullAnswer = Complex.mult(fullAnswer, addTogether());
@@ -124,7 +123,6 @@ public class Calc{
                             advance();
                         }while(lookFor(')'));
                         back();
-                        System.out.println(toSolve.charAt(curPos));
                         if(lookFor(')')){
                             advance();
                             fullAnswer = Complex.mult(fullAnswer, addTogether());
@@ -177,6 +175,10 @@ public class Calc{
                     else if (func.equals("pi")){
                         answer = Math.PI;
                         fullAnswer = new Complex(answer);
+                        return fullAnswer;
+                    }
+                    else if(func.equals("i")){
+                        fullAnswer = new Complex(0, 1);
                         return fullAnswer;
                     }
 

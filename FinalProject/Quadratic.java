@@ -2,40 +2,43 @@ import java.util.*;
 
 public class Quadratic{
 
-    public double a = 0;
-    public double b = 0;
-    public double c = 0;
-    public double[] roots = findRoots(this);
+    public double a;
+    public double b;
+    public double c;
+    public Complex[] roots = new Complex[2];
 
     public Quadratic(double a, double b, double c){
         this.a = a;
         this.b = b;
         this.c = c;
-    }
-
-    public Quadratic(double b, double c){
-        a = 0;
-        this.b = b;
-        this.c = c;
-    }
-
-    public Quadratic(double c){
-        a = 0;
-        b = 0;
-        this.c = 0;
+        roots = findRoots(this);
     }
 
 
-    public static double[] findRoots(Quadratic eq){
+    public static Complex[] findRoots(Quadratic eq){
+        System.out.println(eq.a);
+        System.out.println(eq.b);
+        System.out.println(eq.c);
 
-        double root1 = (-eq.b + Math.sqrt(Math.pow(eq.b, 2) + 4 * eq.a * eq.c))/ (2 * eq.a);
-        double root2 = (-eq.b - Math.sqrt(Math.pow(eq.b, 2) + 4 * eq.a * eq.c))/ (2 * eq.a);
+        Complex root1 = Complex.div(Complex.add(new Complex(-eq.b), Complex.sqrt(new Complex(Math.pow(eq.b, 2) - 4 * eq.a * eq.c))), new Complex(2 * eq.a));
+        Complex root2 = Complex.div(Complex.sub(new Complex(-eq.b), Complex.sqrt(new Complex(Math.pow(eq.b, 2) - 4 * eq.a * eq.c))), new Complex(2 * eq.a));
 
-        double[] roots = {root1, root2};
+        Complex[] roots = {root1, root2};
 
         return roots;
 
 
+    }
+
+    public static Quadratic combine(Quadratic eq1, Quadratic eq2){
+        Quadratic output = new Quadratic(eq1.a -eq2.a, eq1.b - eq2.b, eq1.c - eq2.c);
+        return output;
+    }
+
+    public static void main(String[] args) {
+        Quadratic quad = new Quadratic(1,0,1);
+
+        quad.roots[0].display();
     }
 
 
