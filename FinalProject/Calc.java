@@ -189,7 +189,7 @@ public class Calc{
                         else if (func.equals("torad") && fullAnswer.isReal) fullAnswer = new Complex(Math.toRadians(fullAnswer.real));
                         else if (func.equals ("torad") && !fullAnswer.isReal) throw new RuntimeException("Cannot convert non-real number to radians");
                         else throw new RuntimeException("Unknown function: " + func + "()");
-                        System.out.println(toSolve.charAt(curPos));
+
                     }
 
 
