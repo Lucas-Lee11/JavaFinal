@@ -17,6 +17,13 @@ Please keep in mind the order of operations and ensure that there are no implied
 
 This calculator uses radians. Use the custom function "torad()" in the input for conversion to radians (e.g. 'sin(torad(30))' will return 0.5 + 0.0i
 
+Answers can be checked on Wolfram Alpha
+
+Some examples to run
++ (1+2i)^(3+4i)
++ sin(1+3i)
++ ((4 - 2^3 + 1) * -sqrt(-3\*3-4\*4+3i)) ^(2+3i) + cos(torad(30))
++ e^(i \* pi)
 
 # Credits
 
