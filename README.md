@@ -1,6 +1,7 @@
 # JavaFinal
 Lucas Lee APCS Final Project
 
+Contained within the FinalProject directory. Navigate with 'cd FinalProject'
 
 Compile by using 'javac \*.java'
 
