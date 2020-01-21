@@ -14,6 +14,7 @@ public class Calc{
                     ch = toSolve.charAt(curPos);
                 }
                 else ch = 0;
+                while(ch == ' ') advance();
             }
 
             //Moves backwards on the string
@@ -27,7 +28,6 @@ public class Calc{
 
             //Tries to scan for a character
             boolean lookFor(char toLook){
-                while(ch == ' ') advance();
                 if(ch == toLook) return true;
                 else return false;
             }
@@ -82,9 +82,6 @@ public class Calc{
             }
 
             Complex functionCompute(){
-                //Gets rid of spaces
-                lookFor(' ');
-
                 double answer;
                 Complex fullAnswer = new Complex(0);
                 int startPos = curPos; //Used to find full value of functions or numbers
