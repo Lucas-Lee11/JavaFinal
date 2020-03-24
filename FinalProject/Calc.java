@@ -229,7 +229,7 @@ public class Calc{
 
 
             System.out.print("Evaluation: ");
-            eqSolver(eq).display();
+            System.out.println(eqSolver(eq));
 
 
 
@@ -240,8 +240,6 @@ public class Calc{
 
     public static void main(String[] args) {
         System.out.println("Lucas Lee's AP CS Final Project");
-
-
         calculator();
 
     }

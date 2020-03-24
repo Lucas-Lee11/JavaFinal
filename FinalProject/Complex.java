@@ -4,16 +4,12 @@ public class Complex {
 
 	double real;
 	double imaginary;
-	double mod;
-    double arg;
-    boolean isReal;
+    public boolean isReal;
 
 	public Complex(double r, double i) {
 
 		real = r;
 		imaginary = i;
-		mod = mod(this);
-        arg = arg(this);
         if(i == 0) isReal = true;
         else isReal = false;
 
@@ -22,10 +18,29 @@ public class Complex {
     public Complex(double num){
         real = num;
         imaginary = 0;
-        mod = Math.abs(num);
-        arg = 0;
         isReal = true;
     }
+
+	//Methods to handle polar aspects of complex numbers
+    public double arg(){
+        double output = Math.atan2(imaginary, real);
+        return output;
+    }
+
+	public double mod() {
+		double output = Math.hypot(real, imaginary);
+		return output;
+	}
+
+	//Returs a number's complex consjugate
+    public Complex conjugate(){
+        return new Complex(real, -imaginary);
+    }
+
+	public String toString() {
+		String output = real +  " + " + imaginary + "i";
+		return output;
+	}
 
     //Basic arithmatic
 	public static Complex add(Complex var1, Complex var2) {
@@ -44,17 +59,16 @@ public class Complex {
         return output;
     }
 
-     public static Complex div(Complex var1, Complex var2){
+    public static Complex div(Complex var1, Complex var2){
          Complex numerator = mult(var1, var2.conjugate());
          double denominator = Math.pow(var2.real, 2) + Math.pow(var2.imaginary, 2);
          Complex output = new Complex(numerator.real/denominator, numerator.imaginary/denominator);
          return output;
      }
 
-
-     public static Complex pow(Complex var, Complex pow) {
-         Complex a = mult(new Complex(Math.log(var.mod)), pow);
-         Complex temp = mult(new Complex(var.arg), pow);
+    public static Complex pow(Complex var, Complex pow) {
+         Complex a = mult(new Complex(Math.log(var.mod())), pow);
+         Complex temp = mult(new Complex(var.arg()), pow);
          Complex b = mult(new Complex(0, 1), temp);
          Complex exp = add(a, b);
 
@@ -63,14 +77,13 @@ public class Complex {
 
          Complex output = polarToCoor(mod, arg);
          return output;
-
- 	}
+	 }
 
     public static Complex sqrt(Complex var){
         int sign;
         if(var.imaginary >= 0) sign = 1;
         else sign = -1;
-        Complex output = new Complex(Math.sqrt((var.mod + var.real)/2), sign * Math.sqrt((var.mod - var.real)/2));
+        Complex output = new Complex(Math.sqrt((var.mod() + var.real)/2), sign * Math.sqrt((var.mod() - var.real)/2));
         return output;
     }
 
@@ -89,38 +102,10 @@ public class Complex {
         return output;
     }
 
-
     //Converts from a given modulus and argument to a+bi form
     public static Complex polarToCoor(double mod, double arg){
         Complex output = new Complex(mod * Math.cos(arg), mod * Math.sin(arg));
         return output;
     }
-
-    //Methods to handle polar aspects of complex numbers
-    public static double arg(Complex var){
-        double output = Math.atan2(var.imaginary, var.real);
-        return output;
-    }
-
-	public static double mod(Complex var) {
-		double output = Math.hypot(var.real, var.imaginary);
-		return output;
-	}
-
-    //Returs a number's complex conjugate
-    public Complex conjugate(){
-        return new Complex(this.real, -this.imaginary);
-    }
-
-    //A static and non-static method to display a complex number
-	public static void display(Complex var) {
-		String output =var.real +  " + " + var.imaginary + "i";
-		System.out.println(output);
-	}
-
-    public void display() {
-		String output = this.real +  " + " + this.imaginary + "i";
-		System.out.println(output);
-	}
 
 }
