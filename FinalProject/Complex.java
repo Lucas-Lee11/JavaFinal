@@ -2,8 +2,8 @@ import java.util.*;
 
 public class Complex {
 
-	double real;
-	double imaginary;
+	private double real;
+	private double imaginary;
     public boolean isReal;
 
 	public Complex(double r, double i) {
@@ -38,7 +38,8 @@ public class Complex {
     }
 
 	public String toString() {
-		String output = real +  " + " + imaginary + "i";
+		String output =
+		((double) Math.round(real *100000))/100000 +  " + " + ((double) Math.round(imaginary *100000))/100000 + "i";
 		return output;
 	}
 

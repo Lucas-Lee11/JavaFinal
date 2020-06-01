@@ -19,7 +19,7 @@ public class Calc{
 
             //Moves backwards on the string
             void back(){
-                if(!(curPos - 1 < 0)){
+                if(curPos - 1 >= 0){
                     curPos--;
                     ch = toSolve.charAt(curPos);
                 }
@@ -32,50 +32,42 @@ public class Calc{
                 else return false;
             }
 
-            //Rounding because floating point math isn't always accurate
-            Complex round(){
-                Complex roundedAnswer = addTogether();
-                roundedAnswer.real = ((double) Math.round(roundedAnswer.real *100000))/100000;
-                roundedAnswer.imaginary = ((double) Math.round(roundedAnswer.imaginary *100000))/100000;
-                return roundedAnswer;
-            }
-
             //Main eqSolver; calls multiplyTogether and adds/subtracts results
             Complex addTogether(){
-                Complex fullAnswer = multiplyTogether();
+                Complex complexAnswer = multiplyTogether();
                 while (true){
                     advance();
                     if(lookFor('+')){
                         advance();
-                        fullAnswer = Complex.add(fullAnswer, multiplyTogether());
+                        complexAnswer = Complex.add(complexAnswer, multiplyTogether());
                     }
                     else if(lookFor('-')){
                         advance();
-                        fullAnswer = Complex.sub(fullAnswer, multiplyTogether());
+                        complexAnswer = Complex.sub(complexAnswer, multiplyTogether());
                     }
                     else{
                         back();
-                        return fullAnswer;
+                        return complexAnswer;
                     }
                 }
             }
 
             //Multiplies or divides results of functionCompute
             Complex multiplyTogether(){
-                Complex fullAnswer = functionCompute();
+                Complex complexAnswer = functionCompute();
                 while (true){
                     advance();
                     if(lookFor('*')){
                         advance();
-                        fullAnswer = Complex.mult(fullAnswer, functionCompute());
+                        complexAnswer = Complex.mult(complexAnswer, functionCompute());
                     }
                     else if(lookFor('/')){
                         advance();
-                        fullAnswer = Complex.div(fullAnswer, functionCompute());
+                        complexAnswer = Complex.div(complexAnswer, functionCompute());
                     }
                     else{
                         back();
-                        return fullAnswer;
+                        return complexAnswer;
                     }
                 }
 
@@ -83,7 +75,7 @@ public class Calc{
 
             Complex functionCompute(){
                 double answer;
-                Complex fullAnswer = new Complex(0);
+                Complex complexAnswer = new Complex(0);
                 int startPos = curPos; //Used to find full value of functions or numbers
 
                 //For direct modifiers to a number
@@ -98,9 +90,8 @@ public class Calc{
                 //For parentheses
                 else if(lookFor('(')){
                     advance();
-                    fullAnswer = addTogether();
+                    complexAnswer = addTogether();
                     advance();
-
                 }
 
                 else if ((ch >= '0' && ch <= '9') || ch == '.') {
@@ -109,29 +100,22 @@ public class Calc{
                         advance();
                     }
 
-                    if (lookFor('i')){
-                        back();
-                        answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
-                        advance();
-                        fullAnswer = new Complex(0, answer);
-                        return fullAnswer;
-                    }
                     //Automatically multiplies functions eg 3sin(30) = 3/2
-                    else if(ch >= 'a' && ch <= 'z') {
+                    if(ch >= 'a' && ch <= 'z') {
                         back();
                         answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
-                        fullAnswer = new Complex(answer);
+                        complexAnswer = new Complex(answer);
                         advance();
-                        fullAnswer = Complex.mult(fullAnswer, addTogether());
-                        return fullAnswer;
+                        complexAnswer = Complex.mult(complexAnswer, addTogether());
+                        return complexAnswer;
                     }
-                    else if(!(ch == 0)){
+                    else if(ch != 0){
                         back();
                     }
 
 
                     answer = Double.parseDouble(toSolve.substring(startPos, curPos + 1));
-                    fullAnswer = new Complex(answer);
+                    complexAnswer = new Complex(answer);
 
                 }
 
@@ -148,16 +132,16 @@ public class Calc{
                     boolean sp = false;
                     if (func.equals("e")){
                         answer = Math.E;
-                        fullAnswer = new Complex(answer);
+                        complexAnswer = new Complex(answer);
                         sp = true;
                     }
                     else if (func.equals("pi")){
                         answer = Math.PI;
-                        fullAnswer = new Complex(answer);
+                        complexAnswer = new Complex(answer);
                         sp = true;
                     }
                     else if(func.equals("i")){
-                        fullAnswer = new Complex(0, 1);
+                        complexAnswer = new Complex(0, 1);
                         sp = true;
                     }
 
@@ -172,27 +156,25 @@ public class Calc{
 
                         }
                         else {
-                            back();
-                            fullAnswer = functionCompute();
+                            complexAnswer = addTogether();
+                            advance();
                         }
 
 
                         //List of recognized functions
 
-                        if (func.equals("sqrt")) fullAnswer = Complex.sqrt(fullAnswer);
-                        else if (func.equals("sin")) fullAnswer = Complex.sin(fullAnswer);
-                        else if (func.equals("cos")) fullAnswer = Complex.cos(fullAnswer);
-                        else if (func.equals("tan")) fullAnswer = Complex.tan(fullAnswer);
-                        else if (func.equals("torad") && fullAnswer.isReal) fullAnswer = new Complex(Math.toRadians(fullAnswer.real));
-                        else if (func.equals ("torad") && !fullAnswer.isReal) throw new RuntimeException("Cannot convert non-real number to radians");
+                        if (func.equals("sqrt")) complexAnswer = Complex.sqrt(complexAnswer);
+                        else if (func.equals("sin")) complexAnswer = Complex.sin(complexAnswer);
+                        else if (func.equals("cos")) complexAnswer = Complex.cos(complexAnswer);
+                        else if (func.equals("tan")) complexAnswer = Complex.tan(complexAnswer);
+                        else if (func.equals("torad")) complexAnswer = Complex.mult(complexAnswer, new Complex(Math.PI /180));
                         else throw new RuntimeException("Unknown function: " + func + "()");
-
                     }
 
 
                 }
                 else {
-                    fullAnswer = new Complex(0);
+                    complexAnswer = new Complex(0);
                     throw new RuntimeException("Unexpected character: " + toSolve.charAt(curPos));
                 }
 
@@ -200,15 +182,15 @@ public class Calc{
                 advance();
                 if (lookFor('^')) {
                     advance();
-                    fullAnswer = Complex.pow(fullAnswer, functionCompute());
+                    complexAnswer = Complex.pow(complexAnswer, functionCompute());
                 }
                 else back();
 
-                return fullAnswer;
+                return complexAnswer;
 
             }
 
-        }.round();
+        }.addTogether();
 
 
     }
